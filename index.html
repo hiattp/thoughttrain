@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app='thoughtTrainApp'>
+  <head>
+    <title>ThoughtTrain</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="assets/css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Thought Train</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Bootstrap starter template</h1>
+        <h4>Thoughts:</h4>
+        <ul ng-controller="ThoughtsCtrl">
+          <li ng-repeat="thought in thoughts">{{thought.text}}</li>
+        </ul>
+      </div>
+
+    </div><!-- /.container -->
+    
+    <!-- JS Files -->
+    
+    <!-- AngularJS -->
+    <script src="assets/js/angular.min.js"></script>
+    <!-- Firebase and AngularFire -->
+    <script src="assets/js/firebase.js"></script>
+    <script src="assets/js/angularfire.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="assets/js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Controllers -->
+    <script src="assets/js/controllers.js"></script>
+  </body>
+</html>
