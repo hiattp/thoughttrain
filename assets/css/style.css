@@ -4,7 +4,22 @@ body {
   background-repeat:repeat;
 }
 
+h1 {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+textarea:hover, input:hover, textarea:active, input:active, textarea:focus, input:focus {
+  outline:0px !important;
+  -webkit-appearance:none !important;
+}
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
+}
+
+textarea.form-control {
+  background-color: transparent;
+  font-size: 22px;
 }
