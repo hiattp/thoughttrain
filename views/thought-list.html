@@ -1,7 +1,6 @@
-<div class="starter-template">
-  <h1>Bootstrap starter template</h1>
-  <h4>Thoughts:</h4>
-  <ul>
-    <li ng-repeat="thought in thoughts">{{thought.text}}</li>
-  </ul>
-</div>
+<h1>Active trains of thought:</h1>
+<div class="list-group">
+  <div class="train-topic-wrapper" ng-repeat="thought in thoughts" >
+    <a href="" ng-href="#/thoughts/{{thought.$id}}">{{thought.text}}</a>
+  </div>
+</ul>

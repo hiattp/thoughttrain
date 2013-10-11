@@ -21,20 +21,18 @@ thoughtTrainApp.config(['$routeProvider',
       });
   }]);
 
-thoughtTrainApp.controller('ThoughtListCtrl', ['$scope', 'angularFire', '$location',
-  function ThoughtsCtrl($scope, angularFire) {
-    var ref = new Firebase(firebaseUrl);
-    angularFire(ref, $scope, 'thoughts');
-    
-    $scope.removeThought = function() {
-      $scope.thoughts.splice($scope.toRemove, 1);
-      $scope.toRemove = null;
-    }
+thoughtTrainApp.controller('ThoughtListCtrl', ['$scope', 'angularFireCollection',
+  function ThoughtListCtrl($scope, angularFireCollection) {
+    $scope.thoughts = angularFireCollection(new Firebase(firebaseUrl));
+    // $scope.removeThought = function() {
+    //   $scope.thoughts.splice($scope.toRemove, 1);
+    //   $scope.toRemove = null;
+    // }
   }
 ]);
 
 thoughtTrainApp.controller('ThoughtCreateCtrl', ['$scope', 'angularFireCollection', '$location',
-  function ThoughtsCtrl($scope, angularFireCollection, $location) {
+  function ThoughtCreateCtrl($scope, angularFireCollection, $location) {
     // var ref = new Firebase(firebaseUrl);
     $scope.thoughts = angularFireCollection(new Firebase(firebaseUrl));
     $scope.submit = function(){
@@ -46,7 +44,7 @@ thoughtTrainApp.controller('ThoughtCreateCtrl', ['$scope', 'angularFireCollectio
 
 
 thoughtTrainApp.controller('ThoughtDetailCtrl', ['$scope', 'angularFire', '$routeParams',
-  function ThoughtsCtrl($scope, angularFire, $routeParams) {
+  function ThoughtDetailCtrl($scope, angularFire, $routeParams) {
     var ref = new Firebase(firebaseUrl + $routeParams.thoughtId);
     angularFire(ref, $scope, 'thought');
   }
