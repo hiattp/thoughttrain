@@ -1,8 +1,7 @@
-var thoughtTrainApp = angular.module('thoughtTrainApp', ['firebase'])
-  , firebaseUrl = "https://thoughttrain.firebaseIO.com/thoughts/";
-
-thoughtTrainApp.config(['$routeProvider',
-  function($routeProvider) {
+var thoughtTrainApp = 
+angular.module('thoughtTrainApp', ['firebase']).
+  constant('firebaseUrl', "https://thoughttrain.firebaseIO.com/thoughts/").
+  config(['$routeProvider', function($routeProvider) {
     $routeProvider.
       when('/', {
         templateUrl: 'views/thought-list.html',
@@ -21,19 +20,14 @@ thoughtTrainApp.config(['$routeProvider',
       });
   }]);
 
-thoughtTrainApp.controller('ThoughtListCtrl', ['$scope', 'angularFireCollection',
-  function ThoughtListCtrl($scope, angularFireCollection) {
+thoughtTrainApp.controller('ThoughtListCtrl', ['$scope', 'firebaseUrl', 'angularFireCollection',
+  function($scope, firebaseUrl, angularFireCollection) {
     $scope.thoughts = angularFireCollection(new Firebase(firebaseUrl));
-    // $scope.removeThought = function() {
-    //   $scope.thoughts.splice($scope.toRemove, 1);
-    //   $scope.toRemove = null;
-    // }
   }
 ]);
 
-thoughtTrainApp.controller('ThoughtCreateCtrl', ['$scope', 'angularFireCollection', '$location',
-  function ThoughtCreateCtrl($scope, angularFireCollection, $location) {
-    // var ref = new Firebase(firebaseUrl);
+thoughtTrainApp.controller('ThoughtCreateCtrl', ['$scope', 'firebaseUrl', 'angularFireCollection', '$location',
+  function($scope, firebaseUrl, angularFireCollection, $location) {
     $scope.thoughts = angularFireCollection(new Firebase(firebaseUrl));
     $scope.submit = function(){
       var newThought = $scope.thoughts.add({text: $scope.text});
@@ -42,9 +36,8 @@ thoughtTrainApp.controller('ThoughtCreateCtrl', ['$scope', 'angularFireCollectio
   }
 ]);
 
-
-thoughtTrainApp.controller('ThoughtDetailCtrl', ['$scope', 'angularFire', '$routeParams',
-  function ThoughtDetailCtrl($scope, angularFire, $routeParams) {
+thoughtTrainApp.controller('ThoughtDetailCtrl', ['$scope', 'firebaseUrl', 'angularFire', '$routeParams',
+  function($scope, firebaseUrl, angularFire, $routeParams) {
     var ref = new Firebase(firebaseUrl + $routeParams.thoughtId);
     angularFire(ref, $scope, 'thought');
   }

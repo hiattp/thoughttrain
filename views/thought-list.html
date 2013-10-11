@@ -2,5 +2,6 @@
 <div class="list-group">
   <div class="train-topic-wrapper" ng-repeat="thought in thoughts" >
     <a href="" ng-href="#/thoughts/{{thought.$id}}">{{thought.text}}</a>
+    <button ng-click="thoughts.remove(thought)">Delete</button>
   </div>
 </ul>
