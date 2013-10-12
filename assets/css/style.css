@@ -25,6 +25,7 @@ textarea.form-control {
 }
 
 .train-topic-wrapper{
+  position: relative;
   background-color:rgba(255,255,255,0.6);
   padding: 25px;
   margin-bottom: 7px;
@@ -33,7 +34,43 @@ textarea.form-control {
   border-left: solid 1px rgba(0,0,0,0.05);
 }
 
-.train-topic-wrapper p{
-/*  margin-top: 0px;
-  margin-bottom: 0px;
-*/}
+.train-topic-actions{
+  display: none;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  height: 100%;
+  width: 30%;
+  background-color: white;
+  opacity: 0.5;
+}
+
+.train-topic-action{
+  position: relative;
+  border-left: solid 1px #DDD;
+  color: #333;
+}
+
+.train-topic-action:hover{
+  cursor: pointer;
+  color: black;
+}
+
+.train-topic-action-icon{
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+  left: 50%;
+  margin-left: -25px;
+  font-size: 45px;
+}
+
+.train-topic-edit{
+  width: 50%;
+  height: 100%;
+}
+
+.train-topic-delete{
+  width: 50%;
+  height: 100%;
+}
