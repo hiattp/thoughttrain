@@ -9,6 +9,11 @@ h1 {
   margin-bottom: 20px;
 }
 
+p {
+  font-size: 20px;
+  margin-bottom: 25px;
+}
+
 textarea:hover, input:hover, textarea:active, input:active, textarea:focus, input:focus {
   outline:0px !important;
   -webkit-appearance:none !important;
@@ -21,7 +26,7 @@ textarea:hover, input:hover, textarea:active, input:active, textarea:focus, inpu
 
 textarea.form-control {
   background-color: transparent;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .train-topic-wrapper{
@@ -35,7 +40,7 @@ textarea.form-control {
 }
 
 .train-topic-actions{
-  display: none;
+/*  display: none;*/
   position: absolute;
   right: 0px;
   top: 0px;
@@ -73,4 +78,22 @@ textarea.form-control {
 .train-topic-delete{
   width: 50%;
   height: 100%;
+}
+
+/*
+  THOUGHT SHOW
+*/
+
+h3.thought-proposition{
+  margin-top: 40px;
+}
+
+hr.soften {
+  height: 1px;
+  margin: 40px 0;
+  background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
+  border: 0;
 }

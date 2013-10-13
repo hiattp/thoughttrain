@@ -1,44 +1,80 @@
 var thoughtTrainApp = 
 angular.module('thoughtTrainApp', ['firebase']).
-  constant('firebaseUrl', "https://thoughttrain.firebaseIO.com/thoughts/").
+  constant('firebaseRootUrl', "https://thoughttrain.firebaseIO.com").
+  factory('firebaseRootRef', ['firebaseRootUrl', function(fbRootUrl){
+    return new Firebase(fbRootUrl)
+  }]).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.
       when('/', {
-        templateUrl: 'views/thought-list.html',
-        controller: 'ThoughtListCtrl'
+        templateUrl: 'views/topic-list.html',
+        controller: 'TopicListCtrl'
       }).
-      when('/thoughts/new', {
-        templateUrl: 'views/thought-new.html',
-        controller: 'ThoughtCreateCtrl'
+      when('/topics/new', {
+        templateUrl: 'views/topic-new.html',
+        controller: 'TopicCreateCtrl'
       }).
-      when('/thoughts/:thoughtId', {
-        templateUrl: 'views/thought-detail.html',
-        controller: 'ThoughtDetailCtrl'
+      when('/topics/:topicId', {
+        templateUrl: 'views/topic-detail.html',
+        controller: 'TopicDetailCtrl'
+      }).
+      when('/topics/:topicId/edit', {
+        templateUrl: 'views/topic-edit.html',
+        controller: 'TopicEditCtrl'
       }).
       otherwise({
         redirectTo: '/'
       });
   }]);
 
-thoughtTrainApp.controller('ThoughtListCtrl', ['$scope', 'firebaseUrl', 'angularFireCollection',
-  function($scope, firebaseUrl, angularFireCollection) {
-    $scope.thoughts = angularFireCollection(new Firebase(firebaseUrl));
+thoughtTrainApp.controller('TopicListCtrl', ['$scope', 'firebaseRootRef', 'angularFireCollection',
+  function($scope, firebaseRootRef, angularFireCollection) {
+    $scope.topics = angularFireCollection(firebaseRootRef.child('topics'));
   }
 ]);
 
-thoughtTrainApp.controller('ThoughtCreateCtrl', ['$scope', 'firebaseUrl', 'angularFireCollection', '$location',
-  function($scope, firebaseUrl, angularFireCollection, $location) {
-    $scope.thoughts = angularFireCollection(new Firebase(firebaseUrl));
+thoughtTrainApp.controller('TopicCreateCtrl', ['$scope', 'firebaseRootRef', 'angularFireCollection', '$location',
+  function($scope, firebaseRootRef, angularFireCollection, $location) {
+    $scope.topics = angularFireCollection(firebaseRootRef.child('topics'));
     $scope.submit = function(){
-      var newThought = $scope.thoughts.add({text: $scope.text});
-      $location.path('/thoughts/'+newThought.name());
+      var newTopic = $scope.topics.add({text: $scope.text});
+      $location.path('/topics/'+newTopic.name());
     }
   }
 ]);
 
-thoughtTrainApp.controller('ThoughtDetailCtrl', ['$scope', 'firebaseUrl', 'angularFire', '$routeParams',
-  function($scope, firebaseUrl, angularFire, $routeParams) {
-    var ref = new Firebase(firebaseUrl + $routeParams.thoughtId);
-    angularFire(ref, $scope, 'thought');
+thoughtTrainApp.controller('TopicDetailCtrl', ['$scope', 'firebaseRootRef', 'angularFire', '$routeParams', 'angularFireCollection',
+  function($scope, firebaseRootRef, angularFire, $routeParams, angularFireCollection) {
+    var topicRef = firebaseRootRef.child('topics/' + $routeParams.topicId)
+      , thoughtsRef = firebaseRootRef.child('thoughts');
+
+    $scope.thoughts = ["one","two"];
+    $scope.thoughts.push(angularFireCollection(firebaseRootRef.child('topics/'+'-J5jaHnEg1jEnOd_nunu')));
+    
+    angularFire(topicRef, $scope, 'topic');
+    $scope.thoughtData = {};
+    topicRef.child('thoughts').on('child_added', function(snap){
+      $scope.thoughtData[snap.name()] = angularFire(thoughtsRef.child(snap.name()), $scope, 'thought');;
+    });
+
+    $scope.thoughts.push("forced");
+    
+    $scope.addThought = function(e) {
+      if (e.keyCode != 13) return;
+      var id = thoughtsRef.push();
+      id.set({text: $scope.newThoughtText}, function(err){
+        if(!err){
+          topicRef.child('thoughts/' + id.name()).set(true);
+          $scope.newThoughtText = "";
+        }
+      });
+    }
+  }
+]);
+
+thoughtTrainApp.controller('TopicEditCtrl', ['$scope', 'firebaseRootRef', 'angularFire', '$routeParams',
+  function($scope, firebaseRootRef, angularFire, $routeParams) {
+    var ref = firebaseRootRef.child('topics').child($routeParams.topicId);
+    angularFire(ref, $scope, 'topic');
   }
 ]);
