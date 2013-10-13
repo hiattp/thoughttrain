@@ -48,23 +48,17 @@ thoughtTrainApp.controller('TopicDetailCtrl', ['$scope', 'firebaseRootRef', 'ang
     var topicRef = firebaseRootRef.child('topics/' + $routeParams.topicId)
       , thoughtsRef = firebaseRootRef.child('thoughts');
 
-    $scope.thoughts = ["one","two"];
-    $scope.thoughts.push(angularFireCollection(firebaseRootRef.child('topics/'+'-J5jaHnEg1jEnOd_nunu')));
-    
     angularFire(topicRef, $scope, 'topic');
-    $scope.thoughtData = {};
-    topicRef.child('thoughts').on('child_added', function(snap){
-      $scope.thoughtData[snap.name()] = angularFire(thoughtsRef.child(snap.name()), $scope, 'thought');;
-    });
-
-    $scope.thoughts.push("forced");
+    var thoughtIndex = new FirebaseIndex(topicRef.child('thought_list'), thoughtsRef);    
+    $scope.thoughts = angularFireCollection(thoughtIndex);
+    // angularFire(thoughtIndex, $scope, 'thoughts'); // why doesn't this work?
     
     $scope.addThought = function(e) {
       if (e.keyCode != 13) return;
       var id = thoughtsRef.push();
       id.set({text: $scope.newThoughtText}, function(err){
         if(!err){
-          topicRef.child('thoughts/' + id.name()).set(true);
+          thoughtIndex.add(id.name());
           $scope.newThoughtText = "";
         }
       });

@@ -1,4 +1,4 @@
 <h3 class="thought-proposition">{{topic.text}}</h3>
 <hr class="soften">
-<p ng-repeat="(name,thought) in thoughtData">{{name}}</p>
+<p ng-repeat="thought in thoughts">{{thought.text}}</p>
 <textarea class="form-control" rows="7" ng-model="newThoughtText" ng-keydown="addThought($event)"></textarea>
