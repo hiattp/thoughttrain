@@ -1,0 +1,10 @@
+<hr class="soften">
+<div class="thought-wrapper" ng-repeat="thought in thoughts" ng-mouseover="showThoughtActionsRight = true" ng-mouseleave="showThoughtActionsRight = false">
+  <div class="thought-tools-right list-group" ng-mouseover="showThoughtActionsRight = true" ng-mouseleave="showThoughtActionsRight = false">
+    <a ng-href="#/topics/topicId/thoughts/{{thought.$id}}" class="thought-action-right"  ng-show="showThoughtActionsRight">
+      <span class="thought-action-right-icon glyphicon glyphicon-search"></span>
+    </a>
+  </div>
+  <p>{{thought.text}}</p>
+</div>
+<textarea class="form-control new-thought" rows="7" ng-model="newThought.text" ng-keydown="addThought($event)"></textarea>

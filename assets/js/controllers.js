@@ -22,6 +22,10 @@ angular.module('thoughtTrainApp', ['firebase']).
         templateUrl: 'views/topic-edit.html',
         controller: 'TopicEditCtrl'
       }).
+      when('/topics/:topicId/thoughts/:thoughtId', {
+        templateUrl: 'views/thought-show.html',
+        controller: 'ThoughtShowCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });
@@ -49,17 +53,20 @@ thoughtTrainApp.controller('TopicDetailCtrl', ['$scope', 'firebaseRootRef', 'ang
       , thoughtsRef = firebaseRootRef.child('thoughts');
 
     angularFire(topicRef, $scope, 'topic');
+    $scope.topicId = $routeParams.topicId;
+    
     var thoughtIndex = new FirebaseIndex(topicRef.child('thought_list'), thoughtsRef);    
     $scope.thoughts = angularFireCollection(thoughtIndex);
     // angularFire(thoughtIndex, $scope, 'thoughts'); // why doesn't this work?
     
+    $scope.newThought = {text: "", topicId: $routeParams.topicId}
     $scope.addThought = function(e) {
       if (e.keyCode != 13) return;
       var id = thoughtsRef.push();
-      id.set({text: $scope.newThoughtText}, function(err){
+      id.set($scope.newThought, function(err){
         if(!err){
           thoughtIndex.add(id.name());
-          $scope.newThoughtText = "";
+          $scope.newThought.text = "";
         }
       });
     }
@@ -70,5 +77,30 @@ thoughtTrainApp.controller('TopicEditCtrl', ['$scope', 'firebaseRootRef', 'angul
   function($scope, firebaseRootRef, angularFire, $routeParams) {
     var ref = firebaseRootRef.child('topics').child($routeParams.topicId);
     angularFire(ref, $scope, 'topic');
+  }
+]);
+
+thoughtTrainApp.controller('ThoughtShowCtrl', ['$scope', 'firebaseRootRef', 'angularFire', '$routeParams', 'angularFireCollection',
+  function($scope, firebaseRootRef, angularFire, $routeParams, angularFireCollection) {
+    var thoughtsRef = firebaseRootRef.child('thoughts')
+      , thoughtRef = thoughtsRef.child($routeParams.thoughtId);
+
+    angularFire(thoughtRef, $scope, 'thought');
+    $scope.topicId = $routeParams.topicId;
+
+    var thoughtIndex = new FirebaseIndex(thoughtRef.child('subthought_list'), thoughtsRef);    
+    $scope.thoughts = angularFireCollection(thoughtIndex);
+
+    $scope.newThought = {text: "", topicId: $routeParams.topicId, parentThoughtId: $routeParams.thoughtId}
+    $scope.addThought = function(e) {
+      if (e.keyCode != 13) return;
+      var id = thoughtsRef.push();
+      id.set($scope.newThought, function(err){
+        if(!err){
+          thoughtIndex.add(id.name());
+          $scope.newThought.text = "";
+        }
+      });
+    }
   }
 ]);

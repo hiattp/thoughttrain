@@ -11,7 +11,7 @@ h1 {
 
 p {
   font-size: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 textarea:hover, input:hover, textarea:active, input:active, textarea:focus, input:focus {
@@ -86,14 +86,38 @@ textarea.form-control {
 
 h3.thought-proposition{
   margin-top: 40px;
+  font-size: 20px;
+  line-height: 1.3em;
 }
 
 hr.soften {
   height: 1px;
-  margin: 40px 0;
+  margin-top: 40px;
+  margin-bottom: 35px;
   background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
   background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
   background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
   background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.3), rgba(0,0,0,0));
   border: 0;
+}
+
+textarea.new-thought{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.thought-wrapper{
+  position: relative;
+}
+
+.thought-tools-right{
+  float: right;
+  position: absolute;
+  right: -30px;
+  height: 100%;
+  width: 30px;
+}
+
+.thought-action-right-icon{
+  font-size: 30px;
 }
