@@ -31,6 +31,21 @@ angular.module('thoughtTrainApp', ['firebase']).
       });
   }]);
 
+thoughtTrainApp.controller('MasterCtrl', ['$scope', 'firebaseRootRef', 'angularFireAuth',
+  function($scope, firebaseRootRef, angularFireAuth){
+    angularFireAuth.initialize(firebaseRootRef, {scope: $scope, name: "user"});
+    $scope.login = function(){
+      angularFireAuth.login("facebook",{
+        rememberMe: true,
+        scope: 'email'
+      });
+    }
+    $scope.logout = function(){
+      angularFireAuth.logout()
+    }
+  }
+]);
+
 thoughtTrainApp.controller('TopicListCtrl', ['$scope', 'firebaseRootRef', 'angularFireCollection',
   function($scope, firebaseRootRef, angularFireCollection) {
     $scope.topics = angularFireCollection(firebaseRootRef.child('topics'));
@@ -41,7 +56,7 @@ thoughtTrainApp.controller('TopicCreateCtrl', ['$scope', 'firebaseRootRef', 'ang
   function($scope, firebaseRootRef, angularFireCollection, $location) {
     $scope.topics = angularFireCollection(firebaseRootRef.child('topics'));
     $scope.submit = function(){
-      var newTopic = $scope.topics.add({text: $scope.text});
+      var newTopic = $scope.topics.add({text: $scope.text, parentUserId: $scope.user.id});
       $location.path('/topics/'+newTopic.name());
     }
   }
