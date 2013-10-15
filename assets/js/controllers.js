@@ -56,7 +56,7 @@ thoughtTrainApp.controller('TopicCreateCtrl', ['$scope', 'firebaseRootRef', 'ang
   function($scope, firebaseRootRef, angularFireCollection, $location) {
     $scope.topics = angularFireCollection(firebaseRootRef.child('topics'));
     $scope.submit = function(){
-      var newTopic = $scope.topics.add({text: $scope.text, parentUserId: $scope.user.id});
+      var newTopic = $scope.topics.add({text: $scope.text, parentUserId: $scope.user.id, parentUserName: $scope.user.name});
       $location.path('/topics/'+newTopic.name());
     }
   }
@@ -69,14 +69,15 @@ thoughtTrainApp.controller('TopicDetailCtrl', ['$scope', 'firebaseRootRef', 'ang
 
     angularFire(topicRef, $scope, 'topic');
     $scope.topicId = $routeParams.topicId;
-    
+
     var thoughtIndex = new FirebaseIndex(topicRef.child('thought_list'), thoughtsRef);    
     $scope.thoughts = angularFireCollection(thoughtIndex);
-    // angularFire(thoughtIndex, $scope, 'thoughts'); // why doesn't this work?
-    
-    $scope.newThought = {text: "", topicId: $routeParams.topicId}
+
+    $scope.newThought = {}
     $scope.addThought = function(e) {
       if (e.keyCode != 13) return;
+      var newThoughtProperties = {topicId: $routeParams.topicId, parentUserId: $scope.user.id, parentUserName: $scope.user.name}
+      for (var attrname in newThoughtProperties) { $scope.newThought[attrname] = newThoughtProperties[attrname]; }
       var id = thoughtsRef.push();
       id.set($scope.newThought, function(err){
         if(!err){
@@ -90,8 +91,8 @@ thoughtTrainApp.controller('TopicDetailCtrl', ['$scope', 'firebaseRootRef', 'ang
 
 thoughtTrainApp.controller('TopicEditCtrl', ['$scope', 'firebaseRootRef', 'angularFire', '$routeParams',
   function($scope, firebaseRootRef, angularFire, $routeParams) {
-    var ref = firebaseRootRef.child('topics').child($routeParams.topicId);
-    angularFire(ref, $scope, 'topic');
+    var ref = firebaseRootRef.child('topics').child($routeParams.topicId + "/text");
+    angularFire(ref, $scope, 'topic.text');
   }
 ]);
 
@@ -106,9 +107,11 @@ thoughtTrainApp.controller('ThoughtShowCtrl', ['$scope', 'firebaseRootRef', 'ang
     var thoughtIndex = new FirebaseIndex(thoughtRef.child('subthought_list'), thoughtsRef);    
     $scope.thoughts = angularFireCollection(thoughtIndex);
 
-    $scope.newThought = {text: "", topicId: $routeParams.topicId, parentThoughtId: $routeParams.thoughtId}
+    $scope.newThought = {}
     $scope.addThought = function(e) {
       if (e.keyCode != 13) return;
+      var newThoughtProperties = {topicId: $routeParams.topicId, parentThoughtId: $routeParams.thoughtId, parentUserId: $scope.user.id, parentUserName: $scope.user.name}
+      for (var attrname in newThoughtProperties) { $scope.newThought[attrname] = newThoughtProperties[attrname]; }
       var id = thoughtsRef.push();
       id.set($scope.newThought, function(err){
         if(!err){

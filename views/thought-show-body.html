@@ -7,4 +7,4 @@
   </div>
   <p>{{thought.text}}</p>
 </div>
-<textarea class="form-control new-thought" rows="7" ng-model="newThought.text" ng-keydown="addThought($event)"></textarea>
+<textarea class="form-control new-thought" rows="7" ng-model="newThought.text" ng-keydown="addThought($event)" ng-show="user"></textarea>
